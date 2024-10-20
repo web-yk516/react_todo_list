@@ -3,17 +3,13 @@ import { useCallback, useState } from "react";
 export const useTodo = () => {
   const [todoText, setTodoText] = useState("");
   const [todos, setTodos] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [editingIndex, setEditingIndex] = useState(null);
   const [editText, setEditText] = useState("");
 
   const onChangeTodoText = (e) => setTodoText(e.target.value || "");
+  const totalCount = todos.length;
   const completedCount = todos.filter((todo) => todo.completed).length;
   const incompleteCount = todos.length - completedCount;
-
-  const updateCount = useCallback((newTodos) => {
-    setTotalCount(newTodos.length);
-  }, []);
 
   const onClickAddTodo = useCallback(() => {
     if (todoText === "") return;
@@ -21,17 +17,17 @@ export const useTodo = () => {
     const newTodos = [...todos, newTodo];
     setTodos(newTodos);
     setTodoText("");
-    updateCount(newTodos);
-  }, [todoText, todos, updateCount]);
+    totalCount;
+  }, [todoText, todos, totalCount]);
 
   const onClickDelete = useCallback((index) => {
     if (confirm("本当によろしいですか？")) {
       const newTodos = [...todos];
       newTodos.splice(index, 1);
       setTodos(newTodos);
-      updateCount(newTodos);
+      totalCount;
     }
-  }, [todos, updateCount]);
+  }, [todos, totalCount]);
 
   const onChangeCompleted = useCallback((index) => {
     const newTodos = [...todos];
